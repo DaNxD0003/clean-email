@@ -115,7 +115,7 @@ def revisar_y_borrar():
 
         print(f"\nBloque {i//bloque+1}: {len(eliminados_bloque)} correos eliminados "
               f"en {duracion_bloque:.2f} segundos.")
-        print(f"⏳ Tiempo estimado restante: {tiempo_estimado/60:.1f} minutos.\n")
+        print(f"Tiempo estimado restante: {tiempo_estimado/60:.1f} minutos.\n")
 
         # Reconectar cada 10 000 correos procesados
         if (i + bloque) % 10000 == 0:
