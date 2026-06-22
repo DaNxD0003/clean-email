@@ -3,12 +3,12 @@ import email
 import time
 from email.header import decode_header
 
-# 🔹 Datos de la cuenta
+# Datos de la cuenta
 IMAP_SERVER = "imap.gmail.com"
 EMAIL_ACCOUNT = "tu_correo@gmail.com"
 PASSWORD = "tu_contraseña_app"
 
-# 🔹 Palabras clave en el asunto
+# Palabras clave en el asunto
 PALABRAS_BLOQUEADAS = [
     "canva", "tiktok", "pelis", "promo", "PROMO",
     "ahorra", "descuento", "gratis", "oferta", "regalo",
@@ -22,7 +22,7 @@ PALABRAS_BLOQUEADAS = [
     "outlet", "rebajas", "liquidación", "clearance"
 ]
 
-# 🔹 Remitentes bloqueados
+# Remitentes bloqueados
 REMITENTES_BLOQUEADOS = [
     "newsletter@", "promo@", "no-reply@", "ventas@", "marketing@",
     "info@", "soporte@", "donotreply@", "noreply@"
@@ -58,7 +58,7 @@ def revisar_y_borrar():
     status, mensajes = mail.search(None, "ALL")
     correos = mensajes[0].split()
     total = len(correos)
-    print(f"📥 Total de correos: {total}\n")
+    print(f"Total de correos: {total}\n")
 
     bloque = 500
     eliminados_total = 0
@@ -69,7 +69,7 @@ def revisar_y_borrar():
         inicio_bloque = time.time()
         eliminados_bloque = []
 
-        print(f"\n🔹 Procesando correos {i+1} a {i+len(lote)} de {total}...\n")
+        print(f"\nProcesando correos {i+1} a {i+len(lote)} de {total}...\n")
 
         for num in lote:
             try:
@@ -91,14 +91,14 @@ def revisar_y_borrar():
                     mail.store(num, "+FLAGS", "\\Deleted")
 
             except Exception as e:
-                print(f"⚠️ Error procesando correo {num}: {e}")
+                print(f"Error procesando correo {num}: {e}")
                 continue  # ignora errores y sigue
 
         # Expunge para eliminar definitivamente
         try:
             mail.expunge()
         except imaplib.IMAP4.abort:
-            print("⚠️ Conexión perdida al expurgar. Reconectando...")
+            print("Conexión perdida al expurgar. Reconectando...")
             mail = conectar_imap()
             mail.expunge()
 
@@ -113,19 +113,19 @@ def revisar_y_borrar():
         bloques_restantes = (total - (i+len(lote))) // bloque
         tiempo_estimado = bloques_restantes * duracion_bloque
 
-        print(f"\n✅ Bloque {i//bloque+1}: {len(eliminados_bloque)} correos eliminados "
+        print(f"\nBloque {i//bloque+1}: {len(eliminados_bloque)} correos eliminados "
               f"en {duracion_bloque:.2f} segundos.")
         print(f"⏳ Tiempo estimado restante: {tiempo_estimado/60:.1f} minutos.\n")
 
-        # 🔄 Reconectar cada 10 000 correos procesados
+        # Reconectar cada 10 000 correos procesados
         if (i + bloque) % 10000 == 0:
             mail.close()
             mail.logout()
-            print("🔄 Reconectando a Gmail para evitar corte de sesión...")
+            print("Reconectando a Gmail para evitar corte de sesión...")
             mail = conectar_imap()
 
     duracion_total = time.time() - inicio_global
-    print(f"🚀 Proceso completado en {duracion_total/60:.2f} minutos. "
+    print(f"Proceso completado en {duracion_total/60:.2f} minutos. "
           f"Total eliminados: {eliminados_total}")
 
     mail.close()
